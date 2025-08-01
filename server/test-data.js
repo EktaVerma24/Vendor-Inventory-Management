@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose'); 
+const bcrypt = require('bcryptjs')
 const User = require('./models/User');
 const VendorApplication = require('./models/VendorApplication');
-const Vendor = require('./models/Vendor');
+const Vendor = require('./models/Vendor')//achaa //.env nhi dikh rhi mujhe
 const Shop = require('./models/Shop');
 const Cashier = require('./models/Cashier');
 const Inventory = require('./models/Inventory');

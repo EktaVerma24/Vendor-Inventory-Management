@@ -1,8 +1,8 @@
 const nodemailer = require('nodemailer');
 
 // Email configuration
-const createTransporter = () => {
-  return nodemailer.createTransporter({
+const createTransport = () => {
+  return nodemailer.createTransport({
     service: 'gmail', // You can change this to your email provider
     auth: {
       user: process.env.EMAIL_USER,
@@ -21,7 +21,7 @@ const generateCredentials = () => {
 // Send approval email with credentials
 const sendApprovalEmail = async (vendorEmail, vendorName, credentials) => {
   try {
-    const transporter = createTransporter();
+    const transporter = createTransport();
     
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -69,7 +69,7 @@ const sendApprovalEmail = async (vendorEmail, vendorName, credentials) => {
 // Send rejection email
 const sendRejectionEmail = async (vendorEmail, vendorName, reason) => {
   try {
-    const transporter = createTransporter();
+    const transporter = createTransport();
     
     const mailOptions = {
       from: process.env.EMAIL_USER,
