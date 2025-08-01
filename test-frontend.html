@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Test - Airport Vendor System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Airport Vendor System - Frontend Test</h1>
+        
+        <div class="status info">
+            <strong>Status:</strong> Testing mock data initialization and localStorage functionality
+        </div>
+
+        <h2>Test Controls</h2>
+        <button onclick="testMockData()">Test Mock Data</button>
+        <button onclick="clearData()">Clear All Data</button>
+        <button onclick="showData()">Show Current Data</button>
+        <button onclick="openApp()">Open React App</button>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // Mock data initialization (same as in the React app)
+        function initializeMockData() {
+            const results = [];
+            
+            // Initialize shops if not exists
+            if (!localStorage.getItem('shops')) {
+                const mockShops = [
+                    {
+                        id: 'shop_001',
+                        name: 'Coffee Corner - Terminal A',
+                        location: 'Terminal A, Gate 12',
+                        terminal: 'A',
+                        vendorId: 'vendor_001',
+                        status: 'active',
+                        type: 'Food & Beverage'
+                    },
+                    {
+                        id: 'shop_002',
+                        name: 'Snack Bar - Terminal B',
+                        location: 'Terminal B, Gate 8',
+                        terminal: 'B',
+                        vendorId: 'vendor_001',
+                        status: 'active',
+                        type: 'Food & Beverage'
+                    },
+                    {
+                        id: 'shop_003',
+                        name: 'Gift Shop - Terminal C',
+                        location: 'Terminal C, Gate 15',
+                        terminal: 'C',
+                        vendorId: 'vendor_001',
+                        status: 'active',
+                        type: 'Retail'
+                    }
+                ];
+                localStorage.setItem('shops', JSON.stringify(mockShops));
+                results.push('✅ Shops initialized');
+            } else {
+                results.push('✅ Shops already exist');
+            }
+
+            // Initialize cashiers if not exists
+            if (!localStorage.getItem('cashiers')) {
+                const mockCashiers = [
+                    {
+                        id: 'cashier_001',
+                        name: 'Jane Smith',
+                        email: 'cashier@shop1.com',
+                        password: 'cashier123',
+                        shopId: 'shop_001',
+                        vendorId: 'vendor_001',
+                        status: 'active',
+                        permissions: ['process_bills', 'view_inventory', 'generate_receipts']
+                    },
+                    {
+                        id: 'cashier_002',
+                        name: 'Mike Johnson',
+                        email: 'mike@shop1.com',
+                        password: 'cashier123',
+                        shopId: 'shop_001',
+                        vendorId: 'vendor_001',
+                        status: 'active',
+                        permissions: ['process_bills', 'view_inventory', 'generate_receipts']
+                    },
+                    {
+                        id: 'cashier_003',
+                        name: 'Sarah Wilson',
+                        email: 'sarah@shop2.com',
+                        password: 'cashier123',
+                        shopId: 'shop_002',
+                        vendorId: 'vendor_001',
+                        status: 'active',
+                        permissions: ['process_bills', 'view_inventory', 'generate_receipts']
+                    }
+                ];
+                localStorage.setItem('cashiers', JSON.stringify(mockCashiers));
+                results.push('✅ Cashiers initialized');
+            } else {
+                results.push('✅ Cashiers already exist');
+            }
+
+            // Initialize vendors if not exists
+            if (!localStorage.getItem('vendors')) {
+                const mockVendors = [
+                    {
+                        id: 'vendor_001',
+                        name: 'John Doe Vendor',
+                        email: 'vendor@example.com',
+                        password: 'vendor123',
+                        businessName: 'Demo Vendor Business',
+                        status: 'active',
+                        permissions: ['manage_inventory', 'view_reports', 'manage_cashiers']
+                    }
+                ];
+                localStorage.setItem('vendors', JSON.stringify(mockVendors));
+                results.push('✅ Vendors initialized');
+            } else {
+                results.push('✅ Vendors already exist');
+            }
+
+            // Initialize inventory if not exists
+            if (!localStorage.getItem('inventory')) {
+                const mockInventory = [
+                    { id: 1, name: 'Coffee', price: 3.50, stock: 50, category: 'Beverages', shopId: 'shop_001', minStock: 10 },
+                    { id: 2, name: 'Sandwich', price: 8.99, stock: 25, category: 'Food', shopId: 'shop_001', minStock: 15 },
+                    { id: 3, name: 'Chips', price: 2.50, stock: 100, category: 'Snacks', shopId: 'shop_001', minStock: 20 },
+                    { id: 4, name: 'Water', price: 1.99, stock: 75, category: 'Beverages', shopId: 'shop_001', minStock: 25 },
+                    { id: 5, name: 'Cookie', price: 1.50, stock: 40, category: 'Snacks', shopId: 'shop_001', minStock: 10 },
+                    { id: 6, name: 'Tea', price: 2.99, stock: 30, category: 'Beverages', shopId: 'shop_001', minStock: 15 }
+                ];
+                localStorage.setItem('inventory', JSON.stringify(mockInventory));
+                results.push('✅ Inventory initialized');
+            } else {
+                results.push('✅ Inventory already exists');
+            }
+
+            // Initialize transactions if not exists
+            if (!localStorage.getItem('transactions')) {
+                const mockTransactions = [
+                    {
+                        id: 'txn_001',
+                        shopId: 'shop_001',
+                        cashierId: 'cashier_001',
+                        cashierName: 'Jane Smith',
+                        items: [
+                            { id: 1, name: 'Coffee', price: 3.50, quantity: 2, total: 7.00 }
+                        ],
+                        subtotal: 7.00,
+                        tax: 0.56,
+                        total: 7.56,
+                        timestamp: new Date(Date.now() - 120000).toISOString(),
+                        status: 'completed',
+                        paymentMethod: 'cash'
+                    }
+                ];
+                localStorage.setItem('transactions', JSON.stringify(mockTransactions));
+                results.push('✅ Transactions initialized');
+            } else {
+                results.push('✅ Transactions already exist');
+            }
+
+            // Initialize vendor applications if not exists
+            if (!localStorage.getItem('vendor_applications')) {
+                const mockApplications = [
+                    {
+                        id: 'app_001',
+                        businessName: 'Coffee Corner Inc.',
+                        contactPerson: 'John Doe',
+                        email: 'john@coffeecorner.com',
+                        phone: '+1-555-0123',
+                        businessType: 'Food & Beverage',
+                        preferredLocation: 'Terminal A',
+                        status: 'approved',
+                        submittedAt: new Date(Date.now() - 86400000).toISOString(),
+                        reviewedAt: new Date(Date.now() - 43200000).toISOString(),
+                        reviewedBy: 'admin@airport.com'
+                    },
+                    {
+                        id: 'app_002',
+                        businessName: 'Travel Essentials',
+                        contactPerson: 'Jane Smith',
+                        email: 'jane@travelessentials.com',
+                        phone: '+1-555-0456',
+                        businessType: 'Retail',
+                        preferredLocation: 'Terminal B',
+                        status: 'pending',
+                        submittedAt: new Date(Date.now() - 3600000).toISOString()
+                    }
+                ];
+                localStorage.setItem('vendor_applications', JSON.stringify(mockApplications));
+                results.push('✅ Vendor applications initialized');
+            } else {
+                results.push('✅ Vendor applications already exist');
+            }
+
+            return results;
+        }
+
+        function testMockData() {
+            const results = initializeMockData();
+            displayResults(results, 'success');
+        }
+
+        function clearData() {
+            localStorage.clear();
+            displayResults(['🗑️ All data cleared from localStorage'], 'info');
+        }
+
+        function showData() {
+            const data = {
+                shops: JSON.parse(localStorage.getItem('shops') || '[]'),
+                cashiers: JSON.parse(localStorage.getItem('cashiers') || '[]'),
+                vendors: JSON.parse(localStorage.getItem('vendors') || '[]'),
+                inventory: JSON.parse(localStorage.getItem('inventory') || '[]'),
+                transactions: JSON.parse(localStorage.getItem('transactions') || '[]'),
+                applications: JSON.parse(localStorage.getItem('vendor_applications') || '[]')
+            };
+            
+            displayResults([
+                '📊 Current Data Summary:',
+                `- Shops: ${data.shops.length}`,
+                `- Cashiers: ${data.cashiers.length}`,
+                `- Vendors: ${data.vendors.length}`,
+                `- Inventory Items: ${data.inventory.length}`,
+                `- Transactions: ${data.transactions.length}`,
+                `- Applications: ${data.applications.length}`
+            ], 'info');
+            
+            document.getElementById('results').innerHTML += `
+                <div class="status info">
+                    <h3>Raw Data:</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                </div>
+            `;
+        }
+
+        function openApp() {
+            window.open('http://localhost:3000', '_blank');
+        }
+
+        function displayResults(messages, type) {
+            const resultsDiv = document.getElementById('results');
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = messages.map(msg => `<div>${msg}</div>`).join('');
+            resultsDiv.appendChild(statusDiv);
+        }
+
+        // Auto-initialize on page load
+        window.onload = function() {
+            displayResults(['🔄 Page loaded. Click "Test Mock Data" to initialize the system.'], 'info');
+        };
+    </script>
+</body>
+</html> 
